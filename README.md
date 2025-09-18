@@ -1,4 +1,4 @@
-![Banner](asset/banner.png)
+![Banner](asset/banner.jpg)
 
 # [English](README.md) | [Bahasa Indonesia](README-ID.md)
 
