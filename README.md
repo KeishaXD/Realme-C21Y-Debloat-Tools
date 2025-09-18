@@ -1,3 +1,5 @@
+![Banner](asset/banner.png)
+
 # [English](README.md) | [Bahasa Indonesia](README-ID.md)
 
 # Realme C21Y Debloat Tools
@@ -7,6 +9,9 @@ This tool is a simple batch script to help users remove pre-installed (bloatware
 - Make sure you have installed the Unisoc USB driver (for Realme C21Y)
 - Make sure you have installed Minimal ADB Fastboot or Platform Tools
 - For Windows 8+, make sure you have disabled driver verification
+
+## Instruction
+# [English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
 
 ## Features
 - Remove unwanted pre-installed apps
