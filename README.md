@@ -11,7 +11,7 @@ This tool is a simple batch script to help users remove pre-installed (bloatware
 - For Windows 8+, make sure you have disabled driver verification
 
 ## Instruction
-# [English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
+[English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
 
 ## Features
 - Remove unwanted pre-installed apps

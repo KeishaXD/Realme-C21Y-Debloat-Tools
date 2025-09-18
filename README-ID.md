@@ -11,7 +11,7 @@ Alat ini adalah skrip batch sederhana untuk membantu pengguna menghapus aplikasi
 - Pastikan sudah disable driver vertification untuk windows 8+
 
 ## Instruksi Pemakaian
-# [English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
+[English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
 
 ## Fitur
 - Menghapus aplikasi bawaan yang tidak diinginkan
