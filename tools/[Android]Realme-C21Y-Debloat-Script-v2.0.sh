@@ -110,6 +110,7 @@ pm uninstall -k --user 0 com.coloros.gamespace
 pm uninstall -k --user 0 com.coloros.healthcheck
 pm uninstall -k --user 0 com.heytap.themestore
 pm uninstall -k --user 0 com.heytap.music
+pm uninstall -k --user 0 com.glance.lockscreenRealme
 
 # --- Office ---
 pm uninstall -k --user 0 cn.wps.moffice_eng

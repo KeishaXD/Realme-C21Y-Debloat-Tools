@@ -109,6 +109,7 @@ adb shell pm uninstall -k --user 0 com.coloros.gamespace
 adb shell pm uninstall -k --user 0 com.coloros.healthcheck
 adb shell pm uninstall -k --user 0 com.heytap.themestore
 adb shell pm uninstall -k --user 0 com.heytap.music
+adb shell pm uninstall -k --user 0 com.glance.lockscreenRealme
 
 :: --- Office ---
 adb shell pm uninstall -k --user 0 cn.wps.moffice_eng
