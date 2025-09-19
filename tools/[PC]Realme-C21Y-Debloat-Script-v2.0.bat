@@ -1,36 +1,89 @@
+:: --- Landing Page ---
+: LandingPage
+cls
 @echo off
-title Realme C21Y Debloat Script v2.0
+title Realme C21Y Debloat Script v3.0
 color 0A
 echo ================================================
-echo   Realme C21Y Debloat Script via ADB
-echo   Version : v2.0
-echo   Author  : KeishaXD @github
+echo    Realme C21Y Debloat Script via ADB
+echo    Version : v3.0
+echo    Author  : KeishaXD @github
 echo ================================================
 echo.
-echo Make sure:
-echo 1. USB Debugging is enabled
-echo 2. Phone is connected to the PC
-echo 3. ADB is installed and added to PATH
-echo.
-pause
+echo ===============================================
+echo    Make sure:
+echo    1. USB Debugging is enabled
+echo    2. Phone is connected to the PC
+echo    3. ADB is installed and added to PATH
+echo ===============================================
+echo. 
+echo ===============================================
+echo    Select an option:
+echo    1. Verify USB Debugging
+echo    2. Continue to Debloat Script
+echo    3. Exit Script 
+echo ===============================================
+set /p usbchoice="Enter choice (1-2): "
+if "%usbchoice%"=="1" goto VerifyUSB
+if "%usbchoice%"=="2" goto MainMenu
+if "%usbchoice%"=="3" goto ExitScript
+goto :eof
 
+:VerifyUSB
 adb devices
 echo.
+pause
+goto LandingPage
 
-set /p confirm="Do you want to start debloat? (Y/N): "
-if /i "%confirm%"=="Y" goto debloat
-if /i "%confirm%"=="N" goto exit
-
-:debloat
+:: --- Verify USB Debugging ---
+:VerifyUSB
 cls
-color 0B
-echo Starting debloat process...
-echo Please wait...
-echo.
+adb devices
+pause
+goto LandingPage
 
-:: --- Spinner Loading Effect ---
-for /l %%i in (1,1,30) do (
-    set /a perc=%%i*3
+:: --- Main menu ---
+:MainMenu
+cls
+echo ===============================================
+echo    Select debloat option:
+echo    1. Debloat All
+echo    2. Debloat Partial
+echo    3. Main Menu
+echo ===============================================
+set /p mainchoice="Enter choice (1-3): "
+if "%mainchoice%"=="1" goto DebloatAll
+if "%mainchoice%"=="2" goto PartialMenu
+if "%mainchoice%"=="3" goto LandingPage
+goto MainMenu
+
+:: --- Partial Menu ---
+:PartialMenu
+cls
+echo ===============================================
+echo    Select category to debloat:
+echo    1. Google Apps
+echo    2. Social and Entertainment
+echo    3. E-Commerce
+echo    4. Realme Bloatware
+echo    5. Office
+echo    6. Auto-download Apps [Dont use this if you didn't do a clean flash!]
+echo    7. Back to Main Menu
+echo ===============================================
+set /p partialchoice="Enter choice (1-7): "
+if "%partialchoice%"=="1" goto DebloatGoogle
+if "%partialchoice%"=="2" goto DebloatSocial
+if "%partialchoice%"=="3" goto DebloatEcom
+if "%partialchoice%"=="4" goto DebloatRealme
+if "%partialchoice%"=="5" goto DebloatOffice
+if "%partialchoice%"=="6" goto DebloatAuto
+if "%partialchoice%"=="7" goto MainMenu
+goto PartialMenu
+
+:: --- Spinner ---
+:Spinner
+for /l %%i in (1,1,10) do (
+    set /a perc=%%i*10
     setlocal enabledelayedexpansion
     set /a mod=%%i %% 4
     if !mod! equ 0 set spin=^|
@@ -42,112 +95,163 @@ for /l %%i in (1,1,30) do (
     ping -n 1 127.0.0.1 >nul
     endlocal
 )
+exit /b
 
-:: --- Google Apps ---
-adb shell pm uninstall -k --user 0 com.google.android.apps.magazines
-adb shell pm uninstall -k --user 0 com.google.android.apps.podcasts
-adb shell pm uninstall -k --user 0 com.google.android.videos
-adb shell pm uninstall -k --user 0 com.google.android.apps.tachyon
-adb shell pm uninstall -k --user 0 com.google.android.apps.subscriptions.red
-adb shell pm uninstall -k --user 0 com.google.android.apps.youtube.music
-adb shell pm uninstall -k --user 0 com.google.android.apps.maps
-adb shell pm uninstall -k --user 0 com.google.android.keep
-adb shell pm uninstall -k --user 0 com.google.android.apps.docs
-adb shell pm uninstall -k --user 0 com.google.android.gm
-adb shell pm uninstall -k --user 0 com.google.android.apps.photos
-adb shell pm uninstall -k --user 0 com.google.android.feedback
-adb shell pm uninstall -k --user 0 com.google.ar.lens
-adb shell pm uninstall -k --user 0 com.google.android.apps.wellbeing
-
-:: --- Social & Entertainment ---
-adb shell pm uninstall -k --user 0 com.facebook.katana
-adb shell pm uninstall -k --user 0 com.facebook.system
-adb shell pm uninstall -k --user 0 com.facebook.appmanager
-adb shell pm uninstall -k --user 0 com.facebook.services
-adb shell pm uninstall -k --user 0 com.facebook.orca
-adb shell pm uninstall -k --user 0 com.zhiliaoapp.musically
-adb shell pm uninstall -k --user 0 com.spotify.music
-adb shell pm uninstall -k --user 0 world.social.group.video.share
-adb shell pm uninstall -k --user 0 com.ss.android.buzz
-adb shell pm uninstall -k --user 0 com.linkedin.android
-adb shell pm uninstall -k --user 0 com.kwai.bulldog
-adb shell pm uninstall -k --user 0 com.yxcorp.gifshow.homepage
-adb shell pm uninstall -k --user 0 com.truecaller
-adb shell pm uninstall -k --user 0 com.ss.android.ugc.trill
-
-:: --- E-Commerce ---
-adb shell pm uninstall -k --user 0 com.shopee.id
-adb shell pm uninstall -k --user 0 com.lazada.android
-adb shell pm uninstall -k --user 0 com.alibaba.aliexpresshd
-adb shell pm uninstall -k --user 0 com.msd.JTClient
-adb shell pm uninstall -k --user 0 com.booking
-adb shell pm uninstall -k --user 0 com.fintech.life
-adb shell pm uninstall -k --user 0 com.fintech.uangmudah
-adb shell pm uninstall -k --user 0 com.tokopedia.tkpd
-adb shell pm uninstall -k --user 0 com.agoda.mobile.consumer
-adb shell pm uninstall -k --user 0 com.realmestore.app
-
-:: --- OEM / Realme-ColorOS Bloatware ---
-adb shell pm uninstall -k --user 0 com.oppoex.afterservice
-adb shell pm uninstall -k --user 0 com.nearme.statistics.rom
-adb shell pm uninstall -k --user 0 com.nearme.romupdate
-adb shell pm uninstall -k --user 0 com.heytap.openid
-adb shell pm uninstall -k --user 0 com.heytap.mcs
-adb shell pm uninstall -k --user 0 com.coloros.weather.service
-adb shell pm uninstall -k --user 0 com.coloros.lockassistant
-adb shell pm uninstall -k --user 0 com.coloros.activation
-adb shell pm uninstall -k --user 0 com.heytap.market
-adb shell pm uninstall -k --user 0 com.oplus.phonemanager
-adb shell pm uninstall -k --user 0 com.coloros.filemanager
-adb shell pm uninstall -k --user 0 com.coloros.video
-adb shell pm uninstall -k --user 0 com.realme.as.music
-adb shell pm uninstall -k --user 0 com.heytap.browser
-adb shell pm uninstall -k --user 0 com.heytap.quickgame
-adb shell pm uninstall -k --user 0 com.realmecomm.app
-adb shell pm uninstall -k --user 0 com.oplus.phoneclone
-adb shell pm uninstall -k --user 0 com.coloros.gamespace
-adb shell pm uninstall -k --user 0 com.coloros.healthcheck
-adb shell pm uninstall -k --user 0 com.heytap.themestore
-adb shell pm uninstall -k --user 0 com.heytap.music
-adb shell pm uninstall -k --user 0 com.glance.lockscreenRealme
-
-:: --- Office ---
-adb shell pm uninstall -k --user 0 cn.wps.moffice_eng
-
-:: --- Auto-downloaded Apps ---
-adb shell pm uninstall -k --user 0 com.finaccel.android
-adb shell pm uninstall -k --user 0 com.instagram.android
-adb shell pm uninstall -k --user 0 com.lenovo.anyshare.gps
-adb shell pm uninstall -k --user 0 com.whatsapp.w4b
-adb shell pm uninstall -k --user 0 com.opera.mini.native
-adb shell pm uninstall -k --user 0 com.nexstreaming.app.kinemasterfree
-adb shell pm uninstall -k --user 0 com.telkom.tracencare
-adb shell pm uninstall -k --user 0 com.bca
-adb shell pm uninstall -k --user 0 com.idntimes.idntimes
-adb shell pm uninstall -k --user 0 ru.zdevs.zarchiver
-adb shell pm uninstall -k --user 0 com.whatsapp
-adb shell pm uninstall -k --user 0 com.intsig.camscanner
-adb shell pm uninstall -k --user 0 id.dana
-adb shell pm uninstall -k --user 0 com.mobile.legends
-adb shell pm uninstall -k --user 0 id.co.bri.brimo
-adb shell pm uninstall -k --user 0 com.picsart.studio
-adb shell pm uninstall -k --user 0 com.alightcreative.motion
-adb shell pm uninstall -k --user 0 com.zhiliaoapp.musically.go
-adb shell pm uninstall -k --user 0 com.lemon.lvoverseas
-adb shell pm uninstall -k --user 0 com.facebook.lite
-adb shell pm uninstall -k --user 0 free.vpn.unblock.proxy.turbovpn
-adb shell pm uninstall -k --user 0 com.dts.freefireth
-
-cls
-color 0A
-echo ================================================
-echo   Debloat process finished!
-echo   Restart your Realme C21Y to apply changes.
-echo ================================================
+:: --- Debloat All ---
+:DebloatAll
+call :Spinner
+call :DebloatGoogle
+call :DebloatSocial
+call :DebloatEcom
+call :DebloatRealme
+call :DebloatOffice
+call :DebloatAuto
+echo.
+echo =================================================
+echo    Debloat All Completed!
+echo =================================================
 pause
-goto exit
+goto MainMenu
 
-:exit
+:: --- Debloat Google Apps ---
+:DebloatGoogle
+adb shell pm uninstall -k --user 0 com.google.android.apps.magazines >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.podcasts >nul
+adb shell pm uninstall -k --user 0 com.google.android.videos >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.tachyon >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.subscriptions.red >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.youtube.music >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.maps >nul
+adb shell pm uninstall -k --user 0 com.google.android.keep >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.docs >nul
+adb shell pm uninstall -k --user 0 com.google.android.gm >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.photos >nul
+adb shell pm uninstall -k --user 0 com.google.android.feedback >nul
+adb shell pm uninstall -k --user 0 com.google.ar.lens >nul
+adb shell pm uninstall -k --user 0 com.google.android.apps.wellbeing >nul
+echo.
+echo =================================================
+echo    Debloat Google Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Debloat Social & Entertainment ---
+:DebloatSocial
+adb shell pm uninstall -k --user 0 com.facebook.katana >nul
+adb shell pm uninstall -k --user 0 com.facebook.system >nul
+adb shell pm uninstall -k --user 0 com.facebook.appmanager >nul
+adb shell pm uninstall -k --user 0 com.facebook.services >nul
+adb shell pm uninstall -k --user 0 com.facebook.orca >nul
+adb shell pm uninstall -k --user 0 com.zhiliaoapp.musically >nul
+adb shell pm uninstall -k --user 0 com.spotify.music >nul
+adb shell pm uninstall -k --user 0 world.social.group.video.share >nul
+adb shell pm uninstall -k --user 0 com.ss.android.buzz >nul
+adb shell pm uninstall -k --user 0 com.linkedin.android >nul
+adb shell pm uninstall -k --user 0 com.kwai.bulldog >nul
+adb shell pm uninstall -k --user 0 com.yxcorp.gifshow.homepage >nul
+adb shell pm uninstall -k --user 0 com.truecaller >nul
+adb shell pm uninstall -k --user 0 com.ss.android.ugc.trill >nul
+echo.
+echo =================================================
+echo    Debloat Social and Entertainment Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Debloat E-Commerce ---
+:DebloatEcom
+adb shell pm uninstall -k --user 0 com.shopee.id >nul
+adb shell pm uninstall -k --user 0 com.lazada.android >nul
+adb shell pm uninstall -k --user 0 com.alibaba.aliexpresshd >nul
+adb shell pm uninstall -k --user 0 com.msd.JTClient >nul
+adb shell pm uninstall -k --user 0 com.booking >nul
+adb shell pm uninstall -k --user 0 com.fintech.life >nul
+adb shell pm uninstall -k --user 0 com.fintech.uangmudah >nul
+adb shell pm uninstall -k --user 0 com.tokopedia.tkpd >nul
+adb shell pm uninstall -k --user 0 com.agoda.mobile.consumer >nul
+adb shell pm uninstall -k --user 0 com.realmestore.app >nul
+echo.
+echo =================================================
+echo    Debloat E-Comerce Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Debloat Realme Bloatware ---
+:DebloatRealme
+adb shell pm uninstall -k --user 0 com.oppoex.afterservice >nul
+adb shell pm uninstall -k --user 0 com.nearme.statistics.rom >nul
+adb shell pm uninstall -k --user 0 com.nearme.romupdate >nul
+adb shell pm uninstall -k --user 0 com.heytap.openid >nul
+adb shell pm uninstall -k --user 0 com.heytap.mcs >nul
+adb shell pm uninstall -k --user 0 com.coloros.weather.service >nul
+adb shell pm uninstall -k --user 0 com.coloros.lockassistant >nul
+adb shell pm uninstall -k --user 0 com.coloros.activation >nul
+adb shell pm uninstall -k --user 0 com.heytap.market >nul
+adb shell pm uninstall -k --user 0 com.oplus.phonemanager >nul
+adb shell pm uninstall -k --user 0 com.coloros.filemanager >nul
+adb shell pm uninstall -k --user 0 com.coloros.video >nul
+adb shell pm uninstall -k --user 0 com.realme.as.music >nul
+adb shell pm uninstall -k --user 0 com.heytap.browser >nul
+adb shell pm uninstall -k --user 0 com.heytap.quickgame >nul
+adb shell pm uninstall -k --user 0 com.realmecomm.app >nul
+adb shell pm uninstall -k --user 0 com.oplus.phoneclone >nul
+adb shell pm uninstall -k --user 0 com.coloros.gamespace >nul
+adb shell pm uninstall -k --user 0 com.coloros.healthcheck >nul
+adb shell pm uninstall -k --user 0 com.heytap.themestore >nul
+adb shell pm uninstall -k --user 0 com.heytap.music >nul
+adb shell pm uninstall -k --user 0 com.glance.lockscreenRealme >nul
+echo.
+echo =================================================
+echo    Debloat Realme Bloatware Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Debloat Office ---
+:DebloatOffice
+adb shell pm uninstall -k --user 0 cn.wps.moffice_eng >nul
+echo.
+echo =================================================
+echo    Debloat Office Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Debloat Auto-download Apps ---
+:DebloatAuto
+adb shell pm uninstall -k --user 0 com.finaccel.android >nul
+adb shell pm uninstall -k --user 0 com.instagram.android >nul
+adb shell pm uninstall -k --user 0 com.lenovo.anyshare.gps >nul
+adb shell pm uninstall -k --user 0 com.whatsapp.w4b >nul
+adb shell pm uninstall -k --user 0 com.opera.mini.native >nul
+adb shell pm uninstall -k --user 0 com.nexstreaming.app.kinemasterfree >nul
+adb shell pm uninstall -k --user 0 com.telkom.tracencare >nul
+adb shell pm uninstall -k --user 0 com.bca >nul
+adb shell pm uninstall -k --user 0 com.idntimes.idntimes >nul
+adb shell pm uninstall -k --user 0 ru.zdevs.zarchiver >nul
+adb shell pm uninstall -k --user 0 com.whatsapp >nul
+adb shell pm uninstall -k --user 0 com.intsig.camscanner >nul
+adb shell pm uninstall -k --user 0 id.dana >nul
+adb shell pm uninstall -k --user 0 com.mobile.legends >nul
+adb shell pm uninstall -k --user 0 id.co.bri.brimo >nul
+adb shell pm uninstall -k --user 0 com.picsart.studio >nul
+adb shell pm uninstall -k --user 0 com.alightcreative.motion >nul
+adb shell pm uninstall -k --user 0 com.zhiliaoapp.musically.go >nul
+adb shell pm uninstall -k --user 0 com.lemon.lvoverseas >nul
+adb shell pm uninstall -k --user 0 com.facebook.lite >nul
+adb shell pm uninstall -k --user 0 free.vpn.unblock.proxy.turbovpn >nul
+adb shell pm uninstall -k --user 0 com.dts.freefireth >nul
+echo.
+echo =================================================
+echo    Debloat Auto-Downloads Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto PartialMenu
+goto :eof
+
+:: --- Exit Script ---
+:ExitScript
 cls
 color 0C
 echo Exiting script
