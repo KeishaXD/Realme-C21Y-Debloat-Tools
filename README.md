@@ -10,7 +10,7 @@ This tool is a simple batch script to help users remove pre-installed (bloatware
 - Make sure you have installed Minimal ADB Fastboot or Platform Tools
 - For Windows 8+, make sure you have disabled driver verification
 
-## Instruction
+## Instruction For Android Version
 [English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
 
 ## Features

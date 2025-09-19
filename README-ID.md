@@ -10,7 +10,7 @@ Alat ini adalah skrip batch sederhana untuk membantu pengguna menghapus aplikasi
 - Pastikan kalian sudah menginstall minimal adb fastboot atau platform tools
 - Pastikan sudah disable driver vertification untuk windows 8+
 
-## Instruksi Pemakaian
+## Instruksi Pemakaian Untuk versi Android
 [English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
 
 ## Fitur
