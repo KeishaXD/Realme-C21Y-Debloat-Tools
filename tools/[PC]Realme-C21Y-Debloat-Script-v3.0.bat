@@ -2,11 +2,11 @@
 : LandingPage
 cls
 @echo off
-title Realme C21Y Debloat Script v3.0
+title Realme C21Y Debloat Script v4.0
 color 0A
 echo ================================================
 echo    Realme C21Y Debloat Script via ADB
-echo    Version : v3.0
+echo    Version : v4.0
 echo    Author  : KeishaXD @github
 echo ================================================
 echo.
@@ -21,12 +21,14 @@ echo ===============================================
 echo    Select an option:
 echo    1. Verify USB Debugging
 echo    2. Continue to Debloat Script
-echo    3. Exit Script 
+echo    3. Continue to Restore Script
+echo    4. Exit Script 
 echo ===============================================
-set /p usbchoice="Enter choice (1-2): "
+set /p usbchoice="Enter choice (1-4): "
 if "%usbchoice%"=="1" goto VerifyUSB
 if "%usbchoice%"=="2" goto MainMenu
-if "%usbchoice%"=="3" goto ExitScript
+if "%usbchoice%"=="3" goto RestoreMenu
+if "%usbchoice%"=="4" goto ExitScript
 goto :eof
 
 :VerifyUSB
@@ -91,7 +93,7 @@ for /l %%i in (1,1,10) do (
     if !mod! equ 2 set spin=-
     if !mod! equ 3 set spin=\
     cls
-    echo Debloat in progress... !perc!%% !spin!
+    echo Processing... Please wait... !perc!%% !spin!
     ping -n 1 127.0.0.1 >nul
     endlocal
 )
@@ -249,6 +251,88 @@ echo    Debloat Auto-Downloads Apps Completed!
 echo =================================================
 if "%mainchoice%"=="2" pause & goto PartialMenu
 goto :eof
+
+:: --- Restore menu ---
+:RestoreMenu
+cls
+echo ===============================================
+echo    Note : Restore only work for Gapps and Realme Bloatware !
+echo ===============================================
+echo    Select Restore option:
+echo    1. Restore All
+echo    2. Main Menu
+echo ===============================================
+set /p mainchoice="Enter choice (1-2): "
+if "%mainchoice%"=="1" goto RestoreAll
+if "%mainchoice%"=="2" goto LandingPage
+goto RestoreMenu 
+
+:: --- Restore All ---
+:RestoreAll
+call :Spinner
+call :RestoreGoogle
+call :RestoreRealme
+echo.
+echo =================================================
+echo    Restore All Completed!
+echo =================================================
+pause
+goto RestoreMenu
+
+:: --- Restore Google Apps ---
+:RestoreGoogle
+adb shell cmd package install-existing com.google.android.apps.magazines >nul
+adb shell cmd package install-existing com.google.android.apps.podcasts >nul
+adb shell cmd package install-existing com.google.android.videos >nul
+adb shell cmd package install-existing com.google.android.apps.tachyon >nul
+adb shell cmd package install-existing com.google.android.apps.subscriptions.red >nul
+adb shell cmd package install-existing com.google.android.apps.youtube.music >nul
+adb shell cmd package install-existing com.google.android.apps.maps >nul
+adb shell cmd package install-existing com.google.android.keep >nul
+adb shell cmd package install-existing com.google.android.apps.docs >nul
+adb shell cmd package install-existing com.google.android.gm >nul
+adb shell cmd package install-existing com.google.android.apps.photos >nul
+adb shell cmd package install-existing com.google.android.feedback >nul
+adb shell cmd package install-existing com.google.ar.lens >nul
+adb shell cmd package install-existing com.google.android.apps.wellbeing >nul
+echo.
+echo =================================================
+echo    Restore Google Apps Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto RestoreMenu
+goto :eof
+
+:: --- Restore Realme Bloatware ---
+:RestoreRealme
+adb shell cmd package install-existing com.oppoex.afterservice >nul
+adb shell cmd package install-existing com.nearme.statistics.rom >nul
+adb shell cmd package install-existing com.nearme.romupdate >nul
+adb shell cmd package install-existing com.heytap.openid >nul
+adb shell cmd package install-existing com.heytap.mcs >nul
+adb shell cmd package install-existing com.coloros.weather.service >nul
+adb shell cmd package install-existing com.coloros.lockassistant >nul
+adb shell cmd package install-existing com.coloros.activation >nul
+adb shell cmd package install-existing com.heytap.market >nul
+adb shell cmd package install-existing com.oplus.phonemanager >nul
+adb shell cmd package install-existing com.coloros.filemanager >nul
+adb shell cmd package install-existing com.coloros.video >nul
+adb shell cmd package install-existing com.realme.as.music >nul
+adb shell cmd package install-existing com.heytap.browser >nul
+adb shell cmd package install-existing com.heytap.quickgame >nul
+adb shell cmd package install-existing com.realmecomm.app >nul
+adb shell cmd package install-existing com.oplus.phoneclone >nul
+adb shell cmd package install-existing com.coloros.gamespace >nul
+adb shell cmd package install-existing com.coloros.healthcheck >nul
+adb shell cmd package install-existing com.heytap.themestore >nul
+adb shell cmd package install-existing com.heytap.music >nul
+adb shell cmd package install-existing com.glance.lockscreenRealme >nul
+echo.
+echo =================================================
+echo    Restore Realme Bloatware Completed!
+echo =================================================
+if "%mainchoice%"=="2" pause & goto RestoreMenu
+goto :eof
+
 
 :: --- Exit Script ---
 :ExitScript
