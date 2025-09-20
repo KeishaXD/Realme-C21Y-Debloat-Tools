@@ -313,7 +313,6 @@ adb shell cmd package install-existing com.coloros.weather.service >nul
 adb shell cmd package install-existing com.coloros.lockassistant >nul
 adb shell cmd package install-existing com.coloros.activation >nul
 adb shell cmd package install-existing com.heytap.market >nul
-adb shell cmd package install-existing com.oplus.phonemanager >nul
 adb shell cmd package install-existing com.coloros.filemanager >nul
 adb shell cmd package install-existing com.coloros.video >nul
 adb shell cmd package install-existing com.realme.as.music >nul
@@ -321,10 +320,6 @@ adb shell cmd package install-existing com.heytap.browser >nul
 adb shell cmd package install-existing com.heytap.quickgame >nul
 adb shell cmd package install-existing com.realmecomm.app >nul
 adb shell cmd package install-existing com.oplus.phoneclone >nul
-adb shell cmd package install-existing com.coloros.gamespace >nul
-adb shell cmd package install-existing com.coloros.healthcheck >nul
-adb shell cmd package install-existing com.heytap.themestore >nul
-adb shell cmd package install-existing com.heytap.music >nul
 adb shell cmd package install-existing com.glance.lockscreenRealme >nul
 echo.
 echo =================================================

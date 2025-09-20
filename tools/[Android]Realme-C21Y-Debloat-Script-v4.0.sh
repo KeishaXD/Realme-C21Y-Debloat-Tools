@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# Realme C21Y Debloat Script v3.0
+# Realme C21Y Debloat Script v4.0
 # Author: KeishaXD @github
 # Note: ROOT access required
 
@@ -8,7 +8,7 @@ LandingPage() {
         clear
         echo "==============================================="
         echo "   Realme C21Y Debloat Script"
-        echo "   Version : v3.0"
+        echo "   Version : v4.0"
         echo "   Author  : KeishaXD @github"
         echo "==============================================="
         echo
@@ -22,15 +22,17 @@ LandingPage() {
         echo "   Select an option:"
         echo "   1) Verify Root Access"
         echo "   2) Continue to Debloat Script"
-        echo "   3) Exit Script"
+        echo "   3) Continue to Restore Script"
+        echo "   4) Exit Script"
         echo "==============================================="
-        echo -n "Enter choice (1-3): "
+        echo -n "Enter choice (1-4): "
         read usbchoice
 
         case "$usbchoice" in
             1) VerifyRoot ;;
             2) MainMenu ;;
-            3) ExitScript ;;
+            3) RestoreMenu ;;
+            4) ExitScript ;;
             *) echo "Invalid choice. Try again."; sleep 1 ;;
         esac
     done
@@ -328,6 +330,69 @@ DebloatAuto() {
     pm uninstall -k --user 0 com.dts.freefireth
     echo "Debloat Auto-download Apps Completed!"
     echo "Press Enter to continue..."
+    read
+    return
+}
+
+RestoreMenu() {
+    while true; do
+        clear
+        echo "==============================================="
+        echo    Note : Restore only work for Gapps and Realme Bloatware !
+        echo "==============================================="
+        echo "   Select restore option:"
+        echo "   1) Restore All"
+        echo "   2) Back to Landing Page"
+        echo "==============================================="
+        echo -n "Enter choice (1-2): "
+        read restorechoice
+
+        case "$restorechoice" in
+            1) RestoreAll ;;
+            2) return ;;  # back to LandingPage
+            *) echo "Invalid choice. Try again."; sleep 1 ;;
+        esac
+    done
+}
+
+RestoreAll() {
+    cmd="cmd package install-existing"
+    $cmd com.google.android.apps.magazines
+    $cmd com.google.android.apps.podcasts
+    $cmd com.google.android.videos
+    $cmd com.google.android.apps.tachyon
+    $cmd com.google.android.apps.subscriptions.red
+    $cmd com.google.android.apps.youtube.music
+    $cmd com.google.android.apps.maps
+    $cmd com.google.android.keep
+    $cmd com.google.android.apps.docs
+    $cmd com.google.android.gm
+    $cmd com.google.android.apps.photos
+    $cmd com.google.android.feedback
+    $cmd com.google.ar.lens
+    $cmd com.google.android.apps.wellbeing
+    $cmd com.oppoex.afterservice
+    $cmd com.nearme.statistics.rom
+    $cmd com.nearme.romupdate
+    $cmd com.heytap.openid
+    $cmd com.heytap.mcs
+    $cmd com.coloros.weather.service
+    $cmd com.coloros.lockassistant
+    $cmd com.coloros.activation
+    $cmd com.heytap.market
+    $cmd com.coloros.filemanager
+    $cmd com.coloros.video
+    $cmd com.realme.as.music
+    $cmd com.heytap.browser
+    $cmd com.heytap.quickgame
+    $cmd com.realmecomm.app
+    $cmd com.oplus.phoneclone
+    $cmd com.glance.lockscreenRealme
+
+    echo "==============================================="
+    echo "  Restore All Completed!"
+    echo "==============================================="
+    echo "  Press Enter to return..."
     read
     return
 }
