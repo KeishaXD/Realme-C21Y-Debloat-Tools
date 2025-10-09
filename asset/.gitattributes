@@ -1,0 +1,14 @@
+# Pastikan semua shell script tetap pakai format Linux (LF)
+*.sh text eol=lf
+
+# File batch Windows boleh CRLF
+*.bat text eol=crlf
+
+# File teks umum pakai LF
+*.txt text eol=lf
+
+# File konfigurasi juga LF
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
