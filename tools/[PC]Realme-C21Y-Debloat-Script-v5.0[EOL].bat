@@ -1,78 +1,87 @@
-:: --- Landing Page ---
-: LandingPage
-cls
 @echo off
-title Realme C21Y Debloat Script v4.0
+cls
+title Realme C21Y Debloat Script 5.0 [EOL]
 color 0A
+
+:: ====================================================
+::   Realme C21Y Debloat Script via ADB
+::   Version : v5.0 [EOL]
+::   Author  : KeishaXD @github
+:: ====================================================
+
+:: --- Landing Page ---
+:LandingPage
+cls
 echo ================================================
 echo    Realme C21Y Debloat Script via ADB
-echo    Version : v4.0
+echo    Version : v5.0 [EOL]
 echo    Author  : KeishaXD @github
 echo ================================================
 echo.
-echo ===============================================
+echo ================================================
 echo    Make sure:
 echo    1. USB Debugging is enabled
 echo    2. Phone is connected to the PC
 echo    3. ADB is installed and added to PATH
-echo ===============================================
-echo. 
-echo ===============================================
+echo ================================================
+echo.
+echo ================================================
 echo    Select an option:
 echo    1. Verify USB Debugging
 echo    2. Continue to Debloat Script
 echo    3. Continue to Restore Script
-echo    4. Exit Script 
-echo ===============================================
+echo    4. Exit Script
+echo ================================================
 set /p usbchoice="Enter choice (1-4): "
+
 if "%usbchoice%"=="1" goto VerifyUSB
 if "%usbchoice%"=="2" goto MainMenu
 if "%usbchoice%"=="3" goto RestoreMenu
 if "%usbchoice%"=="4" goto ExitScript
-goto :eof
-
-:VerifyUSB
-adb devices
-echo.
-pause
 goto LandingPage
+
 
 :: --- Verify USB Debugging ---
 :VerifyUSB
 cls
 adb devices
+echo.
 pause
 goto LandingPage
 
-:: --- Main menu ---
+
+:: --- Main Menu ---
 :MainMenu
 cls
-echo ===============================================
-echo    Select debloat option:
+echo ================================================
+echo    Select Debloat Option:
 echo    1. Debloat All
 echo    2. Debloat Partial
-echo    3. Main Menu
-echo ===============================================
+echo    3. Back to Main Menu
+echo ================================================
 set /p mainchoice="Enter choice (1-3): "
+
 if "%mainchoice%"=="1" goto DebloatAll
 if "%mainchoice%"=="2" goto PartialMenu
 if "%mainchoice%"=="3" goto LandingPage
 goto MainMenu
 
-:: --- Partial Menu ---
+
+:: --- Partial Debloat Menu ---
 :PartialMenu
 cls
-echo ===============================================
-echo    Select category to debloat:
+echo ================================================
+echo    Select Category to Debloat:
 echo    1. Google Apps
-echo    2. Social and Entertainment
+echo    2. Social & Entertainment
 echo    3. E-Commerce
 echo    4. Realme Bloatware
 echo    5. Office
-echo    6. Auto-download Apps [Dont use this if you didn't do a clean flash!]
+echo    6. Auto-Download Apps [Use only after clean flash!]
 echo    7. Back to Main Menu
-echo ===============================================
+echo ================================================
 set /p partialchoice="Enter choice (1-7): "
+
 if "%partialchoice%"=="1" goto DebloatGoogle
 if "%partialchoice%"=="2" goto DebloatSocial
 if "%partialchoice%"=="3" goto DebloatEcom
@@ -82,7 +91,8 @@ if "%partialchoice%"=="6" goto DebloatAuto
 if "%partialchoice%"=="7" goto MainMenu
 goto PartialMenu
 
-:: --- Spinner ---
+
+:: --- Spinner Animation ---
 :Spinner
 for /l %%i in (1,1,10) do (
     set /a perc=%%i*10
@@ -98,6 +108,7 @@ for /l %%i in (1,1,10) do (
     endlocal
 )
 exit /b
+
 
 :: --- Debloat All ---
 :DebloatAll
@@ -115,7 +126,8 @@ echo =================================================
 pause
 goto MainMenu
 
-:: --- Debloat Google Apps ---
+
+:: --- Debloat Categories ---
 :DebloatGoogle
 adb shell pm uninstall -k --user 0 com.google.android.apps.magazines >nul
 adb shell pm uninstall -k --user 0 com.google.android.apps.podcasts >nul
@@ -156,7 +168,7 @@ adb shell pm uninstall -k --user 0 com.truecaller >nul
 adb shell pm uninstall -k --user 0 com.ss.android.ugc.trill >nul
 echo.
 echo =================================================
-echo    Debloat Social and Entertainment Apps Completed!
+echo    Debloat Social & Entertainment Apps Completed!
 echo =================================================
 if "%mainchoice%"=="2" pause & goto PartialMenu
 goto :eof
@@ -175,7 +187,7 @@ adb shell pm uninstall -k --user 0 com.agoda.mobile.consumer >nul
 adb shell pm uninstall -k --user 0 com.realmestore.app >nul
 echo.
 echo =================================================
-echo    Debloat E-Comerce Apps Completed!
+echo    Debloat E-Commerce Apps Completed!
 echo =================================================
 if "%mainchoice%"=="2" pause & goto PartialMenu
 goto :eof
@@ -221,7 +233,7 @@ echo =================================================
 if "%mainchoice%"=="2" pause & goto PartialMenu
 goto :eof
 
-:: --- Debloat Auto-download Apps ---
+:: --- Debloat Auto-Download Apps ---
 :DebloatAuto
 adb shell pm uninstall -k --user 0 com.finaccel.android >nul
 adb shell pm uninstall -k --user 0 com.instagram.android >nul
@@ -247,25 +259,28 @@ adb shell pm uninstall -k --user 0 free.vpn.unblock.proxy.turbovpn >nul
 adb shell pm uninstall -k --user 0 com.dts.freefireth >nul
 echo.
 echo =================================================
-echo    Debloat Auto-Downloads Apps Completed!
+echo    Debloat Auto-Downloaded Apps Completed!
 echo =================================================
 if "%mainchoice%"=="2" pause & goto PartialMenu
 goto :eof
 
-:: --- Restore menu ---
+
+:: --- Restore Menu ---
 :RestoreMenu
 cls
-echo ===============================================
-echo    Note : Restore only work for Gapps and Realme Bloatware !
-echo ===============================================
-echo    Select Restore option:
+echo ================================================
+echo    NOTE: Restore only works for GApps and Realme Bloatware!
+echo ================================================
+echo    Select Restore Option:
 echo    1. Restore All
-echo    2. Main Menu
-echo ===============================================
+echo    2. Back to Main Menu
+echo ================================================
 set /p mainchoice="Enter choice (1-2): "
+
 if "%mainchoice%"=="1" goto RestoreAll
 if "%mainchoice%"=="2" goto LandingPage
-goto RestoreMenu 
+goto RestoreMenu
+
 
 :: --- Restore All ---
 :RestoreAll
@@ -279,7 +294,7 @@ echo =================================================
 pause
 goto RestoreMenu
 
-:: --- Restore Google Apps ---
+:: --- Restore Google ---
 :RestoreGoogle
 adb shell cmd package install-existing com.google.android.apps.magazines >nul
 adb shell cmd package install-existing com.google.android.apps.podcasts >nul
@@ -333,15 +348,9 @@ goto :eof
 :ExitScript
 cls
 color 0C
-echo Exiting script
-ping -n 2 127.0.0.1 >nul
-cls
-echo Exiting script .
-ping -n 2 127.0.0.1 >nul
-cls
-echo Exiting script ..
-ping -n 2 127.0.0.1 >nul
-cls
-echo Exiting script ...
-ping -n 2 127.0.0.1 >nul
+for %%a in ("" "." ".." "...") do (
+    cls
+    echo Exiting script%%a
+    ping -n 2 127.0.0.1 >nul
+)
 exit
