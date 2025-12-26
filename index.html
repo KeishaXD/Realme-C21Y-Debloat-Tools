@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Realme C21Y Debloat Tools</title>
+
+  <meta name="description" content="Simple debloat tool for removing pre-installed apps on Realme C21Y devices.">
+  <meta name="author" content="KeishaXD">
+
+  <style>
+    :root {
+      --bg: #020617;
+      --card: #0f172a;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --border: #1e293b;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.35);
+    }
+
+    img {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lang button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .lang button.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .github-btn {
+      background: var(--accent);
+      color: #020617;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-top: 0;
+    }
+
+    h2 {
+      margin-top: 36px;
+      font-size: 1.4rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+    }
+
+    h3 {
+      margin-top: 24px;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    ul, ol {
+      margin-left: 20px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    code {
+      background: #020617;
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: #7dd3fc;
+    }
+
+    .footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="lang">
+        <button id="btn-en" class="active" onclick="setLang('en')">English</button>
+        <button id="btn-id" onclick="setLang('id')">Indonesia</button>
+      </div>
+
+      <a class="github-btn"
+         href="https://github.com/KeishaXD/Realme-C21Y-Debloat-Tools"
+         target="_blank">
+        View on GitHub
+      </a>
+    </div>
+
+    <!-- Banner -->
+    <img src="asset/banner.jpg" alt="Realme C21Y Debloat Tools Banner">
+
+    <h1 data-en="Realme C21Y Debloat Tools"
+        data-id="Realme C21Y Debloat Tools"></h1>
+
+    <p data-en="This tool is a simple batch script to help users remove pre-installed (bloatware) apps on Realme C21Y devices. By using this tool, users can improve performance and reduce unnecessary apps on their device."
+       data-id="Tools ini adalah script batch sederhana untuk membantu menghapus aplikasi bawaan (bloatware) pada perangkat Realme C21Y. Dengan tools ini, performa perangkat dapat meningkat dan aplikasi yang tidak diperlukan dapat dihapus."></p>
+
+    <h2 data-en="Requirements" data-id="Persyaratan"></h2>
+    <ul>
+      <li data-en="Make sure you have installed the Unisoc USB driver (for Realme C21Y)"
+          data-id="Pastikan driver USB Unisoc (Realme C21Y) sudah terpasang"></li>
+      <li data-en="Make sure you have installed Minimal ADB Fastboot or Platform Tools"
+          data-id="Pastikan Minimal ADB Fastboot atau Platform Tools sudah terpasang"></li>
+      <li data-en="For Windows 8+, make sure you have disabled driver verification"
+          data-id="Untuk Windows 8+, pastikan verifikasi driver sudah dinonaktifkan"></li>
+    </ul>
+
+    <h2 data-en="Features" data-id="Fitur"></h2>
+    <ul>
+      <li data-en="Remove unwanted pre-installed apps"
+          data-id="Menghapus aplikasi bawaan yang tidak diperlukan"></li>
+      <li data-en="Easy to use, just run the batch file"
+          data-id="Mudah digunakan, cukup jalankan file batch"></li>
+    </ul>
+
+    <h2 data-en="How to Use" data-id="Cara Menggunakan"></h2>
+
+    <h2 data-en="Instructions for Using Debloat Tools on PC or Laptop"
+        data-id="Instruksi Menggunakan Debloat Tools di PC atau Laptop"></h2>
+    <ol>
+      <li data-en="Connect your Realme C21Y device to the computer using a USB cable."
+          data-id="Hubungkan perangkat Realme C21Y ke komputer menggunakan kabel USB."></li>
+      <li data-en="Enable USB Debugging mode on your device."
+          data-id="Aktifkan mode USB Debugging pada perangkat."></li>
+      <li data-en="Run the Realme-C21Y-Debloat-Tools.bat file."
+          data-id="Jalankan file Realme-C21Y-Debloat-Tools.bat."></li>
+      <li data-en="Follow the instructions on the screen."
+          data-id="Ikuti instruksi yang muncul di layar."></li>
+    </ol>
+
+    <h2 data-en="Instructions for Using Debloat Tools on Android"
+        data-id="Instruksi Menggunakan Debloat Tools di Android"></h2>
+
+    <p data-en="This guide explains how to use the debloat script directly from your Android device, without a PC."
+       data-id="Panduan ini menjelaskan cara menggunakan script debloat langsung dari perangkat Android tanpa PC."></p>
+
+    <h3 data-en="Requirements" data-id="Persyaratan"></h3>
+    <ul>
+      <li data-en="Root access" data-id="Akses root"></li>
+      <li data-en="MT Manager App" data-id="Aplikasi MT Manager"></li>
+    </ul>
+
+    <h3 data-en="Steps" data-id="Langkah-langkah"></h3>
+    <ol>
+      <li data-en="Make sure your Realme C21Y is already rooted."
+          data-id="Pastikan Realme C21Y sudah di-root."></li>
+      <li data-en="Download the Android version from the Release Page."
+          data-id="Unduh versi Android dari halaman Release."></li>
+      <li data-en="Install MT Manager and allow root permission."
+          data-id="Install MT Manager dan izinkan akses root."></li>
+      <li data-en="Run the tools and follow the instructions."
+          data-id="Jalankan tools dan ikuti instruksi."></li>
+    </ol>
+
+    <h2 data-en="License" data-id="Lisensi"></h2>
+    <p data-en="This project is released under the MIT License."
+       data-id="Proyek ini dirilis di bawah Lisensi MIT."></p>
+
+    <h2 data-en="Contributor" data-id="Kontributor"></h2>
+    <ul>
+      <li>KeishaXD</li>
+    </ul>
+
+    <div class="footer">
+      © 2025 KeishaXD · GitHub Pages
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.textContent = el.dataset[lang];
+    });
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+  }
+
+  // FIX BUG: set default language on load
+  document.addEventListener("DOMContentLoaded", () => {
+    setLang('en');
+  });
+</script>
+
+
+</body>
+</html>

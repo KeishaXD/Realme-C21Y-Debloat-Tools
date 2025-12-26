@@ -3,28 +3,88 @@
 # [English](README.md) | [Bahasa Indonesia](README-ID.md)
 
 # Realme C21Y Debloat Tools
-This tool is a simple batch script to help users remove pre-installed (bloatware) apps on Realme C21Y devices. By using this tool, users can improve performance and reduce unnecessary apps on their device.
 
-## Requirements
-- Make sure you have installed the Unisoc USB driver (for Realme C21Y)
-- Make sure you have installed Minimal ADB Fastboot or Platform Tools
-- For Windows 8+, make sure you have disabled driver verification
+A simple debloat tool for removing pre-installed (bloatware) applications on **Realme C21Y** devices.
 
-## Instruction For Android Version
-[English](Instruction.md) | [Bahasa Indonesia](Instruction-ID.md)
+This project provides an easy way to remove unnecessary system apps to help improve device performance and reduce clutter.
+
+---
+
+## Description
+
+**Realme C21Y Debloat Tools** is a simple batch-based debloating script designed specifically for the Realme C21Y.  
+With this tool, users can safely remove unwanted pre-installed applications (bloatware) from their device.
+
+This repository also provides instructions for using the debloat script directly from **Android (rooted)** devices.
+
+---
+
+## Requirements (PC / Laptop)
+
+- Unisoc USB Driver (for Realme C21Y)
+- Minimal ADB Fastboot or Android Platform Tools
+- USB Cable
+- Windows OS  
+- For Windows 8 and above: Driver signature verification must be disabled
+
+---
 
 ## Features
-- Remove unwanted pre-installed apps
-- Easy to use, just run the batch file
 
-## How to Use
-1. Connect your Realme C21Y device to the computer using a USB cable.
-2. Enable USB Debugging mode on your device.
-3. Run the `Realme-C21Y-Debloat-Tools.bat` file by double-clicking or via terminal.
-4. Follow the instructions on the screen.
+- Remove unwanted pre-installed apps (bloatware)
+- Simple and lightweight
+- Easy to use (just run a batch file)
+- Supports PC and Android (rooted)
+
+---
+
+### Instructions for Using Debloat Tools on PC or Laptop
+
+1. Connect your **Realme C21Y** device to your computer using a USB cable.
+2. Enable **USB Debugging** on your device.
+3. Run the `Realme-C21Y-Debloat-Tools.bat` file.
+4. Follow the on-screen instructions.
+
+---
+
+## Instructions for Using Debloat Tools on Android
+
+This method allows you to run the debloat script **directly on your Android device without a PC**.
+
+### Requirements
+
+- Root access
+- MT Manager application
+
+### Steps
+
+1. Make sure your **Realme C21Y is already rooted**.
+2. Download the Android version of the debloat tools from the **Release page**.
+3. Install **MT Manager** and grant root permission when prompted.
+4. Locate the tools folder, run the script, and follow the instructions.
+
+---
 
 ## License
-This project is released under the MIT License.
+
+This project is released under the **MIT License**.
+
+---
 
 ## Contributor
-- KeishaXD
+
+- **KeishaXD**
+
+---
+
+## Links
+
+- 🌐 GitHub Pages:  
+  https://keishaxd.github.io/Realme-C21Y-Debloat-Tools/
+
+- 💻 GitHub Repository:  
+  https://github.com/KeishaXD/Realme-C21Y-Debloat-Tools
+
+---
+
+© 2025 KeishaXD
