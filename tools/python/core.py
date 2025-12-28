@@ -1,5 +1,4 @@
 import subprocess
-import time
 
 ADB = "adb"
 
@@ -107,14 +106,37 @@ AUTO_APPS = [
 # ================= CORE =================
 
 def run(cmd):
-    subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
 
-def debloat(apps):
-    for pkg in apps:
-        run([ADB, "shell", "pm", "uninstall", "-k", "--user", "0", pkg])
-        time.sleep(0.1)
+def check_adb():
+    result = run([ADB, "devices"])
+    return "device" in result.stdout
 
-def restore(apps):
+def debloat(apps, logger=None):
     for pkg in apps:
-        run([ADB, "shell", "cmd", "package", "install-existing", pkg])
-        time.sleep(0.1)
+        result = run([
+            ADB, "shell", "pm", "uninstall", "-k", "--user", "0", pkg
+        ])
+
+        if logger:
+            if "Success" in result.stdout:
+                logger(f"[OK] Debloat: {pkg}")
+            else:
+                logger(f"[SKIP] {pkg}")
+
+def restore(apps, logger=None):
+    for pkg in apps:
+        result = run([
+            ADB, "shell", "cmd", "package", "install-existing", pkg
+        ])
+
+        if logger:
+            if "installed" in result.stdout.lower():
+                logger(f"[OK] Restore: {pkg}")
+            else:
+                logger(f"[SKIP] {pkg}")
