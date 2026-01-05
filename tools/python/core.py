@@ -1,8 +1,33 @@
 import subprocess
 
-ADB = "adb"
+# =====================
+# ADB HANDLER
+# =====================
 
-# ================= APP LIST =================
+ADB_PATH = None  # di-set dari main.py
+
+def set_adb_path(path):
+    global ADB_PATH
+    ADB_PATH = path
+
+def run(cmd):
+    if not ADB_PATH:
+        raise RuntimeError("ADB path not set")
+
+    return subprocess.run(
+        [ADB_PATH] + cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+def check_adb():
+    r = run(["devices"])
+    return "\tdevice" in r.stdout
+
+# =====================
+# APP LIST
+# =====================
 
 GOOGLE_APPS = [
     "com.google.android.apps.magazines",
@@ -103,43 +128,33 @@ AUTO_APPS = [
     "com.dts.freefireth",
 ]
 
-# ================= CORE =================
-
-def run(cmd):
-    return subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True
-    )
-
-def check_adb():
-    result = run([ADB, "devices"])
-    return "device" in result.stdout
+# =====================
+# CORE ACTIONS
+# =====================
 
 def debloat(apps, logger=None):
     for pkg in apps:
-        result = run([
-            ADB, "shell", "pm", "uninstall", "-k", "--user", "0", pkg
-        ])
+        r = run(["shell", "pm", "uninstall", "-k", "--user", "0", pkg])
 
         if logger:
-            if "Success" in result.stdout:
+            if "Success" in r.stdout:
                 logger(f"[OK] Debloat: {pkg}")
             else:
                 logger(f"[SKIP] {pkg}")
 
 def restore(apps, logger=None):
     for pkg in apps:
-        result = run([
-            ADB, "shell", "cmd", "package", "install-existing", pkg
-        ])
+        r = run(["shell", "cmd", "package", "install-existing", pkg])
 
         if logger:
-            if "installed" in result.stdout.lower():
+            if "installed" in r.stdout.lower():
                 logger(f"[OK] Restore: {pkg}")
             else:
                 logger(f"[SKIP] {pkg}")
+
+# =====================
+# DEVICE INFO
+# =====================
 
 def get_device_info():
     props = {
@@ -153,14 +168,8 @@ def get_device_info():
     info = {}
 
     for label, prop in props.items():
-        result = subprocess.run(
-            [ADB, "shell", "getprop", prop],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-
-        value = result.stdout.strip()
-        info[label] = value if value else "Unknown"
+        r = run(["shell", "getprop", prop])
+        val = r.stdout.strip()
+        info[label] = val if val else "Unknown"
 
     return info
