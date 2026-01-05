@@ -3,13 +3,38 @@ from tkinter import messagebox
 import threading
 import subprocess
 import core
+import json
+import os
 
 # =====================
-# UTILITY FUNCTIONS
+# THEME
+# =====================
+
+dark_mode = False
+
+LIGHT_THEME = {
+    "bg": "#f2f2f2",
+    "fg": "#000000",
+    "terminal_bg": "black",
+    "terminal_fg": "lime"
+}
+
+DARK_THEME = {
+    "bg": "#1e1e1e",
+    "fg": "#ffffff",
+    "terminal_bg": "#000000",
+    "terminal_fg": "#00ff9c"
+}
+
+# =====================
+# UTILITY
 # =====================
 
 def info(msg):
     root.after(0, lambda: messagebox.showinfo("Info", msg))
+
+def confirm_action(title, message):
+    return messagebox.askyesno(title, message)
 
 def log(msg):
     def write():
@@ -25,77 +50,133 @@ def run_task(func, apps, name):
     ).start()
 
 # =====================
+# THEME APPLY
+# =====================
+
+CONFIG_FILE = "config.json"
+
+CONFIG_FILE = "config.json"
+
+def load_config():
+    global dark_mode
+    if not os.path.exists(CONFIG_FILE):
+        dark_mode = False
+        return
+    try:
+        with open(CONFIG_FILE, "r") as f:
+            data = json.load(f)
+            dark_mode = data.get("dark_mode", False)
+    except Exception:
+        dark_mode = False
+
+
+def save_config():
+    try:
+        with open(CONFIG_FILE, "w") as f:
+            json.dump({"dark_mode": dark_mode}, f)
+    except Exception:
+        pass
+
+
+
+def save_config():
+    try:
+        with open(CONFIG_FILE, "w") as f:
+            json.dump({"dark_mode": dark_mode}, f)
+    except Exception:
+        pass
+
+def apply_theme():
+    theme = DARK_THEME if dark_mode else LIGHT_THEME
+
+    root.configure(bg=theme["bg"])
+    content_frame.configure(bg=theme["bg"])
+    top_bar.configure(bg=theme["bg"])
+    frame.configure(bg=theme["bg"])
+    terminal_frame.configure(bg=theme["bg"])
+    action_frame.configure(bg=theme["bg"])
+
+    title_label.configure(bg=theme["bg"], fg=theme["fg"])
+
+    terminal.configure(
+        bg=theme["terminal_bg"],
+        fg=theme["terminal_fg"],
+        insertbackground=theme["terminal_fg"]
+    )
+
+    for lbl in category_labels:
+        lbl.configure(bg=theme["bg"], fg=theme["fg"])
+
+    dark_btn.configure(
+        bg="#34495e" if not dark_mode else "#7f8c8d",
+        fg="white"
+    )
+
+def toggle_dark_mode():
+    global dark_mode
+    dark_mode = not dark_mode
+    save_config()
+    apply_theme()
+
+def update_dark_button():
+    if dark_mode:
+        dark_btn.config(text="☀️")
+    else:
+        dark_btn.config(text="🌙")
+
+
+# =====================
 # WARNING
 # =====================
 
 def warn_auto_apps():
     messagebox.showwarning(
-        "Warning - Auto Download Apps",
-        "⚠ WARNING ⚠\n\n"
-        "Auto-Download Apps are NOT recommended to debloat\n"
-        "unless your phone is:\n\n"
-        "• Fresh / new device\n"
-        "• Recently flashed / factory reset\n\n"
-        "Removing these apps on daily-used phones\n"
-        "may cause unexpected issues.\n\n"
-        "Proceed with caution!"
+        "Warning",
+        "⚠ Auto-Download Apps NOT recommended\n\n"
+        "Only safe if device is:\n"
+        "- Fresh\n"
+        "- Recently flashed"
     )
 
 # =====================
-# ADB VERIFICATION
+# ADB
 # =====================
 
 def verify_adb():
     def task():
-        log("[INFO] Checking ADB connection...")
-
+        log("[INFO] Checking ADB...")
         try:
-            result = subprocess.run(
+            r = subprocess.run(
                 ["adb", "devices"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
             )
+            out = r.stdout.strip()
+            log(out)
 
-            output = result.stdout.strip()
-            log(output)
-
-            if "unauthorized" in output:
-                log("[WARN] Device unauthorized")
-                info(
-                    "ADB Device Unauthorized!\n\n"
-                    "• Unlock your phone\n"
-                    "• Allow USB debugging\n"
-                    "• Reconnect USB cable"
-                )
-
-            elif "\tdevice" in output:
-                log("[OK] Device authorized")
-                info("ADB Connected!\nDevice authorized and ready.")
-
-            elif len(output.splitlines()) <= 1:
-                log("[WAIT] Waiting for device")
-                info(
-                    "Waiting for device...\n\n"
-                    "• USB cable connected\n"
-                    "• USB debugging enabled"
-                )
-
+            if "unauthorized" in out:
+                info("ADB Unauthorized!\nAllow USB debugging.")
+            elif "\tdevice" in out:
+                info("ADB Connected & Authorized.")
             else:
-                log("[ERROR] Unknown ADB state")
-                info("Unknown ADB state.\nCheck terminal output.")
-
+                info("Waiting for device...")
         except FileNotFoundError:
-            log("[FATAL] ADB not found")
-            info(
-                "ADB not found!\n\n"
-                "Please install Android Platform Tools\n"
-                "and add ADB to PATH."
-            )
+            info("ADB not found.\nInstall platform-tools.")
 
+    threading.Thread(target=task, daemon=True).start()
+
+def show_device_info():
+    def task():
+        log("[INFO] Fetching device info...")
+        try:
+            data = core.get_device_info()
+            log("===== DEVICE INFO =====")
+            for k, v in data.items():
+                log(f"{k:<12}: {v}")
+            log("=======================")
         except Exception as e:
             log(f"[ERROR] {e}")
-            info("ADB error.\nCheck terminal log.")
 
     threading.Thread(target=task, daemon=True).start()
 
@@ -104,17 +185,23 @@ def verify_adb():
 # =====================
 
 def debloat(apps, name):
+    if not confirm_action("Confirm", f"Debloat {name}?"):
+        return
     log(f"[START] Debloat {name}")
     core.debloat(apps, logger=log)
-    info(f"Debloat {name} Completed!")
+    info(f"Debloat {name} completed")
 
 def restore(apps, name):
+    if not confirm_action("Confirm", f"Restore {name}?"):
+        return
     log(f"[START] Restore {name}")
     core.restore(apps, logger=log)
-    info(f"Restore {name} Completed!")
+    info(f"Restore {name} completed")
 
 def debloat_all():
     def task():
+        if not confirm_action("⚠ WARNING", "Debloat ALL categories?"):
+            return
         log("[START] Debloat ALL")
         for apps in (
             core.GOOGLE_APPS,
@@ -125,11 +212,14 @@ def debloat_all():
             core.AUTO_APPS,
         ):
             core.debloat(apps, logger=log)
-        info("Debloat ALL Completed!")
+        info("Debloat ALL completed")
+
     threading.Thread(target=task, daemon=True).start()
 
 def restore_all():
     def task():
+        if not confirm_action("Confirm", "Restore ALL apps?"):
+            return
         log("[START] Restore ALL")
         for apps in (
             core.GOOGLE_APPS,
@@ -140,7 +230,8 @@ def restore_all():
             core.AUTO_APPS,
         ):
             core.restore(apps, logger=log)
-        info("Restore ALL Completed!")
+        info("Restore ALL completed")
+
     threading.Thread(target=task, daemon=True).start()
 
 # =====================
@@ -148,25 +239,44 @@ def restore_all():
 # =====================
 
 root = tk.Tk()
-root.title("Realme C21Y Debloat Tool v6.1 [GUI]")
-root.geometry("700x520")
+root.iconbitmap("assets/icon.ico")
+root.title("Realme C21Y Debloat Tool v5.0 EOL [GUI]")
+root.geometry("720x550")
 root.resizable(False, False)
 
 content_frame = tk.Frame(root)
 content_frame.pack(fill="both", expand=True)
 
-tk.Label(
+# =====================
+# TITLE + TOP BAR
+# =====================
+
+top_bar = tk.Frame(content_frame)
+top_bar.pack(fill="x", pady=(5, 0))
+top_bar.grid_columnconfigure(0, weight=1)
+
+dark_btn = tk.Button(
+    top_bar,
+    text="DARK MODE",
+    width=12,
+    font=("Segoe UI", 9, "bold"),
+    command=toggle_dark_mode
+)
+dark_btn.grid(row=0, column=1, padx=10, sticky="e")
+
+title_label = tk.Label(
     content_frame,
     text="Realme C21Y Debloat Tool",
     font=("Segoe UI", 18, "bold")
-).pack(pady=12)
+)
+title_label.pack(pady=10)
 
 # =====================
 # CATEGORY LIST
 # =====================
 
 frame = tk.Frame(content_frame)
-frame.pack(pady=(6, 20))
+frame.pack(pady=(6, 18))
 
 categories = [
     ("Google Apps", core.GOOGLE_APPS),
@@ -177,14 +287,12 @@ categories = [
     ("Auto-Download Apps", core.AUTO_APPS),
 ]
 
+category_labels = []
+
 for i, (name, apps) in enumerate(categories):
-    tk.Label(
-        frame,
-        text=name,
-        width=24,
-        anchor="w",
-        font=("Segoe UI", 10)
-    ).grid(row=i, column=0, padx=8, pady=6)
+    lbl = tk.Label(frame, text=name, width=24, anchor="w", font=("Segoe UI", 10))
+    lbl.grid(row=i, column=0, padx=8, pady=6)
+    category_labels.append(lbl)
 
     tk.Button(
         frame,
@@ -203,11 +311,10 @@ for i, (name, apps) in enumerate(categories):
     if name == "Auto-Download Apps":
         tk.Button(
             frame,
-            text="⚠️",
+            text="⚠",
             width=3,
-            font=("Segoe UI", 10, "bold"),
-            fg="white",
             bg="#f39c12",
+            fg="white",
             command=warn_auto_apps
         ).grid(row=i, column=3, padx=6)
 
@@ -221,8 +328,6 @@ terminal_frame.pack(padx=12, pady=10, fill="both")
 terminal = tk.Text(
     terminal_frame,
     height=9,
-    bg="black",
-    fg="lime",
     font=("Consolas", 9)
 )
 terminal.pack(side="left", fill="both", expand=True)
@@ -231,7 +336,7 @@ scroll = tk.Scrollbar(terminal_frame, command=terminal.yview)
 scroll.pack(side="right", fill="y")
 terminal.config(yscrollcommand=scroll.set)
 
-log("[INFO] Application started.")
+log("[INFO] Application started")
 
 # =====================
 # ACTION BUTTONS
@@ -240,56 +345,27 @@ log("[INFO] Application started.")
 action_frame = tk.Frame(content_frame)
 action_frame.pack(pady=(10, 16))
 
-BTN_STYLE = {
-    "relief": "raised",
-    "bd": 2,
-    "highlightthickness": 0
-}
+BTN_STYLE = {"relief": "raised", "bd": 2, "cursor": "hand2"}
 
-tk.Button(
-    action_frame,
-    text="VERIFY ADB",
-    width=16,
-    height=2,
-    bg="#2980b9",
-    fg="white",
-    font=("Segoe UI", 10, "bold"),
-    command=verify_adb,
-    **BTN_STYLE
-).grid(row=0, column=0, padx=10)
+tk.Button(action_frame, text="VERIFY ADB", width=14, height=2,
+          bg="#2980b9", fg="white", command=verify_adb, **BTN_STYLE).grid(row=0, column=0, padx=6)
 
-tk.Button(
-    action_frame,
-    text="DEBLOAT ALL",
-    width=16,
-    height=2,
-    bg="#c0392b",
-    fg="white",
-    font=("Segoe UI", 10, "bold"),
-    command=debloat_all,
-    **BTN_STYLE
-).grid(row=0, column=1, padx=10)
+tk.Button(action_frame, text="DEVICE INFO", width=14, height=2,
+          bg="#8e44ad", fg="white", command=show_device_info, **BTN_STYLE).grid(row=0, column=1, padx=6)
 
-tk.Button(
-    action_frame,
-    text="RESTORE ALL",
-    width=16,
-    height=2,
-    bg="#27ae60",
-    fg="white",
-    font=("Segoe UI", 10, "bold"),
-    command=restore_all,
-    **BTN_STYLE
-).grid(row=0, column=2, padx=10)
+tk.Button(action_frame, text="DEBLOAT ALL", width=14, height=2,
+          bg="#c0392b", fg="white", command=debloat_all, **BTN_STYLE).grid(row=0, column=2, padx=6)
 
-tk.Button(
-    action_frame,
-    text="EXIT",
-    width=14,
-    height=2,
-    font=("Segoe UI", 10),
-    command=root.destroy,
-    **BTN_STYLE
-).grid(row=0, column=3, padx=10)
+tk.Button(action_frame, text="RESTORE ALL", width=14, height=2,
+          bg="#27ae60", fg="white", command=restore_all, **BTN_STYLE).grid(row=0, column=3, padx=6)
 
+tk.Button(action_frame, text="EXIT", width=14, height=2,
+          command=root.destroy, **BTN_STYLE).grid(row=0, column=4, padx=6)
+
+# =====================
+# INIT
+# =====================
+
+load_config()
+apply_theme()
 root.mainloop()

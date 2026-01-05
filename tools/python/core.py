@@ -140,3 +140,27 @@ def restore(apps, logger=None):
                 logger(f"[OK] Restore: {pkg}")
             else:
                 logger(f"[SKIP] {pkg}")
+
+def get_device_info():
+    props = {
+        "Brand": "ro.product.brand",
+        "Model": "ro.product.model",
+        "Android": "ro.build.version.release",
+        "SDK": "ro.build.version.sdk",
+        "Device": "ro.product.device",
+    }
+
+    info = {}
+
+    for label, prop in props.items():
+        result = subprocess.run(
+            [ADB, "shell", "getprop", prop],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        value = result.stdout.strip()
+        info[label] = value if value else "Unknown"
+
+    return info
