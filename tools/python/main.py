@@ -272,7 +272,6 @@ def debloat_all():
             core.ECOM_APPS,
             core.REALME_APPS,
             core.OFFICE_APPS,
-            core.AUTO_APPS,
         ):
             core.debloat(apps, logger=log)
         info("Debloat ALL completed")
@@ -289,7 +288,6 @@ def restore_all():
             core.ECOM_APPS,
             core.REALME_APPS,
             core.OFFICE_APPS,
-            core.AUTO_APPS,
         ):
             core.restore(apps, logger=log)
         info("Restore ALL completed")
